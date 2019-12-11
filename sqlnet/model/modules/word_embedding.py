@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 import numpy as np
+import traceback
 
 class WordEmbedding(nn.Module):
     def __init__(self, word_emb, N_word, gpu, SQL_TOK,
@@ -35,7 +36,7 @@ class WordEmbedding(nn.Module):
                 if self.trainable:
                     q_val = [self.w2i.get(x, 0) for x in one_q]
                 else:
-                    q_val = [self.word_emb.get(x, np.zeros(self.N_word, dtype=np.float32)) for x in one_q]
+                    q_val = [self.word_emb[1][self.word_emb[0][x]] if x in self.word_emb[0]  else np.zeros(self.N_word, dtype=np.float32) for x in one_q]
                 if self.our_model:
                     if self.trainable:
                         val_embs.append([1] + q_val + [2])  #<BEG> and <END>
@@ -48,11 +49,13 @@ class WordEmbedding(nn.Module):
                         col_val = [self.w2i.get(x, 0) for x in one_col_all]
                         val_embs.append( [0 for _ in self.SQL_TOK] + col_val + [0] + q_val+ [0])
                     else:
-                        col_val = [self.word_emb.get(x, np.zeros(self.N_word, dtype=np.float32)) for x in one_col_all]
+                        col_val =[self.word_emb[1][self.word_emb[0][x]] if x in self.word_emb[0]  else np.zeros(self.N_word, dtype=np.float32) for x in  one_col_all]
                         val_embs.append( [np.zeros(self.N_word, dtype=np.float32) for _ in self.SQL_TOK] + col_val + [np.zeros(self.N_word, dtype=np.float32)] + q_val+ [np.zeros(self.N_word, dtype=np.float32)])
                     val_len[i] = len(self.SQL_TOK) + len(col_val) + 1 + len(q_val) + 1
-        except:
+        except :
             print("error")
+            traceback.print_exc()
+
         max_len = max(val_len)
 
         if self.trainable:
@@ -97,8 +100,7 @@ class WordEmbedding(nn.Module):
             if self.trainable:
                 val = [self.w2i.get(x, 0) for x in one_str]
             else:
-                val = [self.word_emb.get(x, np.zeros(
-                    self.N_word, dtype=np.float32)) for x in one_str]
+                val = [self.word_emb[1][self.word_emb[0][x]] if x in self.word_emb[0]  else np.zeros(self.N_word, dtype=np.float32) for x in one_str]
             val_embs.append(val)
             val_len[i] = len(val)
         max_len = max(val_len)
