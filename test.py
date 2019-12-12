@@ -22,9 +22,12 @@ if __name__ == '__main__':
             help='If set, then test Seq2SQL model; default is SQLNet model.')
     parser.add_argument('--train_emb', action='store_true',
             help='Use trained word embedding for SQLNet.')
+    parser.add_argument('--use_bert', action='store_true',
+            help='Use Bert Embeddings.')
+            
     args = parser.parse_args()
 
-    N_word=50
+    N_word=768
     B_word=6
     if args.toy:
         USE_SMALL=True
@@ -42,7 +45,7 @@ if __name__ == '__main__':
                     args.dataset, use_small=USE_SMALL)
 
     word_emb = load_word_emb('glove/glove.%dB.%dd.txt'%(B_word,N_word), \
-        load_used=True, use_small=USE_SMALL) # load_used can speed up loading
+        args.use_bert, use_small=USE_SMALL) # load_used can speed up loading
 
     if args.baseline:
         model = Seq2SQL(word_emb, N_word=N_word, gpu=GPU, trainable_emb = True)
