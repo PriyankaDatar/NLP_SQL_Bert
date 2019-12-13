@@ -8,6 +8,12 @@ Files Modified:
 
 /sqlnet/model/modules/word_embedding.py
 
+Versions:
+Python 3.6.9
+Pytorch 1.3.1 
+
+
+
 
 # SQLNet
 
