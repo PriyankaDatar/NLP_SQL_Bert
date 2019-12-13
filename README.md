@@ -38,14 +38,12 @@ The code is written using PyTorch in Python 2.7. Check [here](http://pytorch.org
 ```bash
 pip install -r requirements.txt
 ```
+Additional Requirements for Bert:
+pip install bert-embedding
+# If you want to run on GPU machine, please install `mxnet-cu92`.
+pip install mxnet-cu92
 
-## Downloading the glove embedding.
-Download the pretrained glove embedding from [here](https://github.com/stanfordnlp/GloVe) using
-```bash
-bash download_glove.sh
-```
-
-## Extract the glove embedding for training.
+## Extract the bert embedding for training.
 Run the following command to process the pretrained glove embedding for training the word embedding:
 ```bash
 python extract_vocab.py
