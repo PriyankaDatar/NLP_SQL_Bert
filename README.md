@@ -40,7 +40,7 @@ pip install -r requirements.txt
 ```
 Additional Requirements for Bert:
 pip install bert-embedding
-# If you want to run on GPU machine, please install `mxnet-cu92`.
+If you want to run on GPU machine, please install `mxnet-cu92`.
 pip install mxnet-cu92
 
 ## Extract the bert embedding for training.
